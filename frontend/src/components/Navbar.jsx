@@ -1,19 +1,13 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-<<<<<<< HEAD
 import axiosClient from "../api/axiosClient";
-=======
->>>>>>> 51dfc8b9df3a6d096f5476827fc51edbb9a4367a
 import "./Navbar.css";
 
 const Navbar = () => {
   const { user, logout } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
-<<<<<<< HEAD
   const [unreadCount, setUnreadCount] = useState(0);
-=======
->>>>>>> 51dfc8b9df3a6d096f5476827fc51edbb9a4367a
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -21,7 +15,6 @@ const Navbar = () => {
     setMenuOpen(false);
   }, [location]);
 
-<<<<<<< HEAD
   useEffect(() => {
     if (user) {
       fetchUnreadCount();
@@ -39,8 +32,6 @@ const Navbar = () => {
     }
   };
 
-=======
->>>>>>> 51dfc8b9df3a6d096f5476827fc51edbb9a4367a
   const handleLogout = async () => {
     await logout();
     navigate("/login");
@@ -52,11 +43,8 @@ const Navbar = () => {
     { to: "/create-announcement", label: "Publier" },
   ];
 
-<<<<<<< HEAD
   const notificationLink = { to: "/notifications", label: "🔔 Notifications" };
 
-=======
->>>>>>> 51dfc8b9df3a6d096f5476827fc51edbb9a4367a
   return (
     <nav className="navbar">
       <div className="nav-container">
@@ -81,34 +69,39 @@ const Navbar = () => {
             <li key={link.to}>
               <Link
                 to={link.to}
-                className={`nav-link ${location.pathname === link.to ? "active" : ""}`}
+                className={`nav-link ${
+                  location.pathname === link.to ? "active" : ""
+                }`}
               >
                 {link.label}
               </Link>
             </li>
           ))}
 
-<<<<<<< HEAD
           {user && (
             <li key={notificationLink.to}>
               <Link
                 to={notificationLink.to}
-                className={`nav-link ${location.pathname === notificationLink.to ? "active" : ""}`}
+                className={`nav-link ${
+                  location.pathname === notificationLink.to ? "active" : ""
+                }`}
                 style={{ position: "relative" }}
               >
                 {notificationLink.label}
                 {unreadCount > 0 && (
-                  <span style={{
-                    position: "absolute",
-                    top: "-5px",
-                    right: "-10px",
-                    background: "#e74c3c",
-                    color: "white",
-                    borderRadius: "50%",
-                    padding: "2px 6px",
-                    fontSize: "0.75rem",
-                    fontWeight: "bold",
-                  }}>
+                  <span
+                    style={{
+                      position: "absolute",
+                      top: "-5px",
+                      right: "-10px",
+                      background: "#e74c3c",
+                      color: "white",
+                      borderRadius: "50%",
+                      padding: "2px 6px",
+                      fontSize: "0.75rem",
+                      fontWeight: "bold",
+                    }}
+                  >
                     {unreadCount}
                   </span>
                 )}
@@ -120,15 +113,15 @@ const Navbar = () => {
             <li key="/admin">
               <Link
                 to="/admin"
-                className={`nav-link ${location.pathname === "/admin" ? "active" : ""}`}
+                className={`nav-link ${
+                  location.pathname === "/admin" ? "active" : ""
+                }`}
               >
                 🛡️ Admin
               </Link>
             </li>
           )}
 
-=======
->>>>>>> 51dfc8b9df3a6d096f5476827fc51edbb9a4367a
           {user ? (
             <li className="user-section">
               <div className="user-info">
