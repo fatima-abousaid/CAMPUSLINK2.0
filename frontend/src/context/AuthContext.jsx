@@ -11,7 +11,7 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     if (token) {
       axiosClient.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-      
+
       fetchUser();
     } else {
       setLoading(false);
@@ -33,18 +33,18 @@ export function AuthProvider({ children }) {
   const login = async (email, password) => {
     try {
       const response = await axiosClient.post("/login", { email, password });
-      
+
       localStorage.setItem("TOKEN", response.data.token);
       localStorage.setItem("USER", JSON.stringify(response.data.user));
       setToken(response.data.token);
       setUser(response.data.user);
-      
+
       return { success: true, data: response.data };
     } catch (error) {
       console.error("Login error:", error);
-      return { 
-        success: false, 
-        error: error.response?.data?.error || "Login failed" 
+      return {
+        success: false,
+        error: error.response?.data?.error || "Login failed"
       };
     }
   };
@@ -65,6 +65,7 @@ export function AuthProvider({ children }) {
 
   const value = {
     user,
+    setUser,
     login,
     logout,
     token,
