@@ -1,0 +1,50 @@
+.create-container {
+  width: 80%;
+  margin: auto;
+  margin-top: 40px;
+}
+
+.create-container h2 {
+  margin-bottom: 20px;
+  font-size: 28px;
+}
+
+.create-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.create-form input,
+.create-form textarea {
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+}
+
+.create-form textarea {
+  height: 120px;
+}
+
+.btn-create {
+  padding: 14px;
+  background: #4c8bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 17px;
+  cursor: pointer;
+}
+
+.btn-create:hover {
+  background: #3b74d4;
+}
+
+.success-msg {
+  padding: 10px;
+  background: #d4ffd4;
+  color: #0f800f;
+  margin-bottom: 20px;
+  border-radius: 6px;
+}
