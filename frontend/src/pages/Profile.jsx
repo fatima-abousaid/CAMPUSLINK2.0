@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import "./Profile.css";
 
 export default function Profile() {
-  const { user, login } = useAuth();  
+  const { user, setUser, login } = useAuth();
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
@@ -41,10 +41,23 @@ export default function Profile() {
     try {
       const res = await axiosClient.put("/user/update", form);
 
-      login(user.email, form.current_password); 
+      // Update local user state with the response data
+      setUser(res.data.user);
+
+      // If password was changed, we might want to re-login or just let the token stay valid
+      // But we definitely shouldn't call login() with empty password if only name changed.
 
       setSuccess("Profil mis à jour avec succès !");
       setTimeout(() => setSuccess(""), 4000);
+
+      // Clear password fields
+      setForm(prev => ({
+        ...prev,
+        current_password: "",
+        new_password: "",
+        new_password_confirmation: ""
+      }));
+
     } catch (err) {
       setError(err.response?.data?.message || "Erreur lors de la mise à jour");
     } finally {
@@ -71,7 +84,7 @@ export default function Profile() {
             {success}
           </div>
         )}
-        
+
         {error && (
           <div className="alert alert-error">
             <span className="alert-icon">⚠</span>
@@ -82,7 +95,7 @@ export default function Profile() {
         <form onSubmit={handleSubmit} className="profile-form">
           <div className="form-section">
             <h2 className="section-title">Informations personnelles</h2>
-            
+
             <div className="form-group">
               <label className="form-label">Nom complet</label>
               <input
@@ -120,7 +133,7 @@ export default function Profile() {
 
           <div className="form-section">
             <h2 className="section-title">Changer le mot de passe</h2>
-            
+
             <div className="form-group">
               <label className="form-label">Mot de passe actuel</label>
               <input
@@ -155,9 +168,9 @@ export default function Profile() {
             </div>
           </div>
 
-          <button 
-            type="submit" 
-            disabled={loading} 
+          <button
+            type="submit"
+            disabled={loading}
             className={`submit-btn ${loading ? 'loading' : ''}`}
           >
             {loading ? (
