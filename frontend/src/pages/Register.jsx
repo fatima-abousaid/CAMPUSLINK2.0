@@ -20,11 +20,7 @@ const Register = () => {
   };
 
   const validateEmail = (email) => {
-<<<<<<< HEAD
     return /@edu\.uiz\.ac\.ma$/i.test(email);
-=======
-    return /@(edu|ac)\.ma$/i.test(email);
->>>>>>> 51dfc8b9df3a6d096f5476827fc51edbb9a4367a
   };
 
   const handleSubmit = async (e) => {
@@ -32,7 +28,7 @@ const Register = () => {
     setErrors("");
 
     if (!validateEmail(form.email)) {
-      return setErrors("Veuillez utiliser un email académique (@edu.ma ou @ac.ma)");
+      return setErrors("Veuillez utiliser un email académique (@edu.uiz.ac.ma)");
     }
 
     if (form.password !== form.password_confirmation) {
@@ -60,19 +56,12 @@ const Register = () => {
   return (
     <div className="register-container">
       <form className="register-card" onSubmit={handleSubmit}>
-<<<<<<< HEAD
-
-=======
-        
->>>>>>> 51dfc8b9df3a6d096f5476827fc51edbb9a4367a
-        {/* Logo */}
         <img src="/logo.png" alt="CampusLink Logo" className="register-logo" />
 
         <h2 className="register-title">Créer un compte</h2>
 
         {errors && <p className="error-msg">{errors}</p>}
 
-        {/* Nom complet */}
         <div className="form-group">
           <label>Nom complet</label>
           <input
@@ -85,7 +74,6 @@ const Register = () => {
           />
         </div>
 
-        {/* Email académique */}
         <div className="form-group">
           <label>Email académique</label>
           <input
@@ -98,7 +86,6 @@ const Register = () => {
           />
         </div>
 
-        {/* Mot de passe */}
         <div className="form-group">
           <label>Mot de passe</label>
           <div className="password-wrapper">
@@ -119,7 +106,6 @@ const Register = () => {
           </div>
         </div>
 
-        {/* Confirmation */}
         <div className="form-group">
           <label>Confirmer le mot de passe</label>
           <div className="password-wrapper">
