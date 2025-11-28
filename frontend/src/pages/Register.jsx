@@ -20,7 +20,11 @@ const Register = () => {
   };
 
   const validateEmail = (email) => {
+<<<<<<< HEAD
     return /@edu\.uiz\.ac\.ma$/i.test(email);
+=======
+    return /@(edu|ac)\.ma$/i.test(email);
+>>>>>>> 51dfc8b9df3a6d096f5476827fc51edbb9a4367a
   };
 
   const handleSubmit = async (e) => {
@@ -56,7 +60,11 @@ const Register = () => {
   return (
     <div className="register-container">
       <form className="register-card" onSubmit={handleSubmit}>
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> 51dfc8b9df3a6d096f5476827fc51edbb9a4367a
         {/* Logo */}
         <img src="/logo.png" alt="CampusLink Logo" className="register-logo" />
 

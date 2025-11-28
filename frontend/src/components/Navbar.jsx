@@ -1,13 +1,19 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+<<<<<<< HEAD
 import axiosClient from "../api/axiosClient";
+=======
+>>>>>>> 51dfc8b9df3a6d096f5476827fc51edbb9a4367a
 import "./Navbar.css";
 
 const Navbar = () => {
   const { user, logout } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
+<<<<<<< HEAD
   const [unreadCount, setUnreadCount] = useState(0);
+=======
+>>>>>>> 51dfc8b9df3a6d096f5476827fc51edbb9a4367a
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -15,6 +21,7 @@ const Navbar = () => {
     setMenuOpen(false);
   }, [location]);
 
+<<<<<<< HEAD
   useEffect(() => {
     if (user) {
       fetchUnreadCount();
@@ -32,6 +39,8 @@ const Navbar = () => {
     }
   };
 
+=======
+>>>>>>> 51dfc8b9df3a6d096f5476827fc51edbb9a4367a
   const handleLogout = async () => {
     await logout();
     navigate("/login");
@@ -43,8 +52,11 @@ const Navbar = () => {
     { to: "/create-announcement", label: "Publier" },
   ];
 
+<<<<<<< HEAD
   const notificationLink = { to: "/notifications", label: "🔔 Notifications" };
 
+=======
+>>>>>>> 51dfc8b9df3a6d096f5476827fc51edbb9a4367a
   return (
     <nav className="navbar">
       <div className="nav-container">
@@ -76,6 +88,7 @@ const Navbar = () => {
             </li>
           ))}
 
+<<<<<<< HEAD
           {user && (
             <li key={notificationLink.to}>
               <Link
@@ -114,6 +127,8 @@ const Navbar = () => {
             </li>
           )}
 
+=======
+>>>>>>> 51dfc8b9df3a6d096f5476827fc51edbb9a4367a
           {user ? (
             <li className="user-section">
               <div className="user-info">

@@ -6,8 +6,11 @@ use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\LikeController;
+<<<<<<< HEAD
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\AdminController;
+=======
+>>>>>>> 51dfc8b9df3a6d096f5476827fc51edbb9a4367a
 
 // AUTH
 Route::post('/register', [AuthController::class, 'register']);
@@ -27,6 +30,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/comments/{id}', [CommentController::class, 'destroy']);
 
     Route::post('/likes/toggle', [LikeController::class, 'toggle']);
+<<<<<<< HEAD
 
     // Notifications
     Route::get('/notifications', [NotificationController::class, 'index']);
@@ -42,6 +46,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/announcements', [AdminController::class, 'announcements']);
         Route::delete('/announcements/{id}', [AdminController::class, 'deleteAnnouncement']);
     });
+=======
+>>>>>>> 51dfc8b9df3a6d096f5476827fc51edbb9a4367a
 });
 
 // Public routes
