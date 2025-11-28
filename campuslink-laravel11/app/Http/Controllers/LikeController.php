@@ -33,7 +33,7 @@ class LikeController extends Controller
             }
         }
 
-        $announcement = Announcement::with(['user', 'likes.user'])
+        $announcement = Announcement::with(['user', 'likes.user', 'comments.user'])
             ->withCount('likes')
             ->find($announcementId);
 

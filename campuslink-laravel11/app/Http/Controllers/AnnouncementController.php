@@ -49,7 +49,7 @@ public function index(Request $request)
 
 public function show($id)
 {
-    return Announcement::with(['user', 'comments.user', 'likes.user'])
+    return Announcement::with(['user', 'comments.user', 'comments.replies.user', 'likes.user'])
         ->withCount('likes')
         ->findOrFail($id);
 }
