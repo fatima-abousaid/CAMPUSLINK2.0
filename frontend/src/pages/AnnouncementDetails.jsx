@@ -12,6 +12,7 @@ export default function AnnouncementDetails() {
   const [loading, setLoading] = useState(true);
   const [comment, setComment] = useState("");
   const [isLiking, setIsLiking] = useState(false);
+  const [replyingTo, setReplyingTo] = useState(null); // Track which comment we're replying to
 
   useEffect(() => {
     fetchAnnouncement();
@@ -58,15 +59,30 @@ export default function AnnouncementDetails() {
       const res = await axiosClient.post("/comments", {
         announcement_id: id,
         content: comment,
+        parent_id: replyingTo,
       });
 
-      setAnn((prev) => ({
-        ...prev,
-        comments: [...prev.comments, res.data],
-        comments_count: prev.comments_count + 1,
-      }));
+      // If it's a reply, add it to the parent's replies array
+      if (replyingTo) {
+        setAnn((prev) => ({
+          ...prev,
+          comments: prev.comments.map((c) =>
+            c.id === replyingTo
+              ? { ...c, replies: [...(c.replies || []), res.data] }
+              : c
+          ),
+        }));
+      } else {
+        // If it's a top-level comment, add it to the comments array
+        setAnn((prev) => ({
+          ...prev,
+          comments: [...(prev.comments || []), res.data],
+          comments_count: (prev.comments_count || 0) + 1,
+        }));
+      }
 
       setComment("");
+      setReplyingTo(null);
     } catch (err) {
       alert("Erreur commentaire");
     }
@@ -168,23 +184,56 @@ export default function AnnouncementDetails() {
         {/* COMMENTS */}
         <div style={styles.commentsSection}>
           <h3 style={styles.commentsTitle}>
-            Commentaires ({ann.comments?.length || 0})
+            Commentaires ({ann.comments?.filter(c => !c.parent_id).length || 0})
           </h3>
 
           <div style={styles.commentsList}>
-            {ann.comments?.length === 0 ? (
+            {ann.comments?.filter(c => !c.parent_id).length === 0 ? (
               <p style={styles.noComments}>Aucun commentaire pour l'instant.</p>
             ) : (
-              ann.comments?.map((c) => (
-                <div key={c.id} style={styles.comment}>
-                  <strong style={styles.commentAuthor}>{c.user.name}</strong>
-                  <p style={styles.commentText}>{c.content || c.contenu}</p>
-                  <small style={styles.commentDate}>
-                    {new Date(c.created_at).toLocaleTimeString("fr-MA", {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
-                  </small>
+              ann.comments?.filter(c => !c.parent_id).map((c) => (
+                <div key={c.id}>
+                  <div style={styles.comment}>
+                    <strong style={styles.commentAuthor}>{c.user.name}</strong>
+                    <p style={styles.commentText}>{c.content || c.contenu}</p>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                      <small style={styles.commentDate}>
+                        {new Date(c.created_at).toLocaleTimeString("fr-MA", {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
+                      </small>
+                      {user && (
+                        <button
+                          onClick={() => {
+                            setReplyingTo(c.id);
+                            setComment("");
+                          }}
+                          style={styles.replyBtn}
+                        >
+                          💬 Répondre
+                        </button>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Render replies */}
+                  {c.replies && c.replies.length > 0 && (
+                    <div style={styles.repliesContainer}>
+                      {c.replies.map((reply) => (
+                        <div key={reply.id} style={styles.reply}>
+                          <strong style={styles.commentAuthor}>{reply.user.name}</strong>
+                          <p style={styles.commentText}>{reply.content}</p>
+                          <small style={styles.commentDate}>
+                            {new Date(reply.created_at).toLocaleTimeString("fr-MA", {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            })}
+                          </small>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               ))
             )}
@@ -192,10 +241,18 @@ export default function AnnouncementDetails() {
 
           {user && (
             <div style={styles.commentForm}>
+              {replyingTo && (
+                <div style={styles.replyingIndicator}>
+                  <span>Répondre à un commentaire</span>
+                  <button onClick={() => setReplyingTo(null)} style={styles.cancelReplyBtn}>
+                    ✕
+                  </button>
+                </div>
+              )}
               <textarea
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
-                placeholder="Écrivez un commentaire..."
+                placeholder={replyingTo ? "Écrivez votre réponse..." : "Écrivez un commentaire..."}
                 style={styles.textarea}
                 rows={3}
               />
@@ -307,7 +364,7 @@ const styles = {
   commentText: { marginTop: "0.5rem", color: "#333" },
   commentDate: { color: "#95a5a6", fontSize: "0.85rem" },
 
-  commentForm: { display: "flex", gap: "1rem", marginTop: "1.5rem" },
+  commentForm: { display: "flex", gap: "1rem", marginTop: "1.5rem", flexDirection: "column" },
   textarea: {
     flex: 1,
     padding: "1rem",
@@ -322,5 +379,54 @@ const styles = {
     borderRadius: "16px",
     fontWeight: "bold",
     cursor: "pointer",
+    alignSelf: "flex-end",
+  },
+
+  replyBtn: {
+    padding: "6px 12px",
+    background: "#ecf0f1",
+    color: "#2c3e50",
+    border: "none",
+    borderRadius: "12px",
+    fontSize: "0.85rem",
+    fontWeight: "600",
+    cursor: "pointer",
+    transition: "0.2s",
+  },
+
+  repliesContainer: {
+    marginLeft: "2.5rem",
+    marginTop: "1rem",
+    paddingLeft: "1.5rem",
+    borderLeft: "3px solid #e3f2fd",
+  },
+
+  reply: {
+    background: "#f8f9fa",
+    padding: "1rem",
+    borderRadius: "12px",
+    marginBottom: "0.8rem",
+  },
+
+  replyingIndicator: {
+    background: "#e3f2fd",
+    padding: "0.8rem 1rem",
+    borderRadius: "12px",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: "0.5rem",
+    fontSize: "0.9rem",
+    color: "#1976d2",
+    fontWeight: "600",
+  },
+
+  cancelReplyBtn: {
+    background: "transparent",
+    border: "none",
+    color: "#1976d2",
+    fontSize: "1.2rem",
+    cursor: "pointer",
+    fontWeight: "bold",
   },
 };

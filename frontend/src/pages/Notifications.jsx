@@ -71,7 +71,7 @@ export default function Notifications() {
                             }}
                         >
                             <div style={styles.notificationIcon}>
-                                {notification.data.type === "like" ? "❤️" : "💬"}
+                                {notification.data.type === "like" ? "❤️" : notification.data.type === "reply" ? "↩️" : "💬"}
                             </div>
                             <div style={styles.notificationContent}>
                                 <p style={styles.notificationMessage}>
