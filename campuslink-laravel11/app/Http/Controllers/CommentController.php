@@ -20,7 +20,6 @@ class CommentController extends Controller
             'content' => $data['content'],
         ]);
 
-<<<<<<< HEAD
         // Notify the announcement owner
         $comment->load('announcement.user');
         $announcement = $comment->announcement;
@@ -28,8 +27,6 @@ class CommentController extends Controller
             $announcement->user->notify(new \App\Notifications\NewCommentNotification($comment, $request->user()));
         }
 
-=======
->>>>>>> 51dfc8b9df3a6d096f5476827fc51edbb9a4367a
         return response()->json($comment->load('user'), 201);
     }
 }
