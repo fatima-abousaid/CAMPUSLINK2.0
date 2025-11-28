@@ -155,11 +155,11 @@ export default function AnnouncementDetails() {
 
           {isOwner && (
             <div style={styles.ownerActions}>
-              <Link to={`/announcements/edit/${id}`} style={styles.editBtn}>
-                Modifier
+              <Link to={`/edit-announcement/${id}`} style={styles.editBtn}>
+                ✏️ Modifier
               </Link>
               <button onClick={deleteAnnouncement} style={styles.deleteBtn}>
-                Supprimer
+                🗑️ Supprimer
               </button>
             </div>
           )}
